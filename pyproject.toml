@@ -1,0 +1,7 @@
+[project]
+name = "genie"
+version = "0.1.0"
+description = "A CLI tool that translates natural language into shell commands"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
