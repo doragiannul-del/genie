@@ -5,7 +5,7 @@ description = "A CLI tool that translates natural language into shell commands"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "google-genai>=1.0.0",
+    "openai>=1.0.0",
     "python-dotenv>=1.0.0",
 ]
 

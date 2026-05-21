@@ -2,8 +2,7 @@ from __future__ import annotations
 
 import json
 
-from google import genai
-from google.genai import errors, types
+from openai import APIError, OpenAI
 
 from genie.config import Config
 
@@ -26,38 +25,34 @@ Rules:
 
 
 def get_command(prompt: str, config: Config, linux: bool = False) -> dict:
+    # prepare prompt
     os_target = "Linux" if linux else "macOS"
     user_message = f"OS: {os_target}\nTask: {prompt}"
-    return _call_gemini(user_message, config)
 
-
-def _call_gemini(user_message: str, config: Config) -> dict:
-    client = genai.Client(api_key=config.api_key)
+    client = OpenAI(api_key=config.api_key, base_url=config.base_url)
 
     try:
-        response = client.models.generate_content(
+        response = client.chat.completions.create(
             model=config.model,
-            contents=user_message,
-            config=types.GenerateContentConfig(
-                system_instruction=SYSTEM_PROMPT,
-                response_mime_type="application/json",
-                temperature=0,
-            ),
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": user_message},
+            ],
+            response_format={"type": "json_object"},
+            temperature=0,
         )
-    except errors.ClientError as e:
+    except APIError as e:
         msg = str(e)
         if "429" in msg:
             raise RuntimeError(
                 "Rate limit reached. Please wait a moment and try again."
             ) from e
         if "401" in msg or "403" in msg:
-            raise RuntimeError(
-                "Invalid API key. Please check your GEMINI_API_KEY."
-            ) from e
+            raise RuntimeError("Invalid API key. Please check your API_KEY.") from e
         if "404" in msg:
             raise RuntimeError(
-                f"Model not found. Check your GENIE_MODEL setting (currently: {config.model})."
+                f"Model not found. Check your AI_MODEL setting (currently: {config.model})."
             ) from e
-        raise RuntimeError(f"Gemini API error: {e}") from e
+        raise RuntimeError(f"API error: {e}") from e
 
-    return json.loads(response.text)
+    return json.loads(response.choices[0].message.content)

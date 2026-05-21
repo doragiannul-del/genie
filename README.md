@@ -33,13 +33,12 @@ genie compress all images in this folder to under 500kb
 
 ## Configuration
 
-Get a free Gemini API key at [aistudio.google.com](https://aistudio.google.com), then choose one of two approaches:
-
 **Option 1 — environment variables** (via shell or `.env` file):
 
 ```sh
-GEMINI_API_KEY=...
-GENIE_MODEL=gemini-2.0-flash   # optional, defaults to gemini-2.0-flash
+API_KEY=...
+API_BASE_URL=...
+AI_MODEL=...   # optional, defaults to gemini-2.0-flash
 ```
 
 **Option 2 — config file** at `~/.genie/config.toml`:
@@ -47,7 +46,8 @@ GENIE_MODEL=gemini-2.0-flash   # optional, defaults to gemini-2.0-flash
 ```toml
 [genie]
 api_key = "..."
-model = "gemini-2.0-flash"     # optional, defaults to gemini-2.0-flash
+base_url = "..."
+ai_model = "..."     # optional, defaults to gemini-2.0-flash
 ```
 
 Use `--linux` to generate Linux commands instead of macOS ones.
