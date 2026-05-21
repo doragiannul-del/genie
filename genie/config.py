@@ -8,20 +8,19 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 CONFIG_PATH = Path.home() / ".genie" / "config.toml"
-DEFAULT_MODEL = "gemini-2.0-flash"
 
 _ERROR_MESSAGE = """No configuration found. Choose one of two approaches:
 
 Option 1 — environment variables (via shell or .env file):
     API_KEY=...
     API_BASE_URL=...
-    AI_MODEL=gemini-2.0-flash   # optional, defaults to gemini-2.0-flash
+    AI_MODEL=...
 
 Option 2 — config file at ~/.genie/config.toml:
     [genie]
     api_key = "..."
     base_url = "..."
-    ai_model = "..."            # optional, defaults to gemini-2.0-flash
+    ai_model = "..."
 """
 
 
@@ -29,7 +28,7 @@ Option 2 — config file at ~/.genie/config.toml:
 class Config:
     api_key: str
     base_url: str
-    model: str = DEFAULT_MODEL
+    model: str
 
 
 def load_config() -> Config:
@@ -39,7 +38,7 @@ def load_config() -> Config:
         return Config(
             api_key=os.environ["API_KEY"],
             base_url=os.environ["API_BASE_URL"],
-            model=os.environ.get("AI_MODEL", DEFAULT_MODEL),
+            model=os.environ["AI_MODEL"],
         )
 
     if CONFIG_PATH.exists():
@@ -50,7 +49,7 @@ def load_config() -> Config:
             return Config(
                 api_key=api_key,
                 base_url=genie["base_url"],
-                model=genie.get("ai_model", DEFAULT_MODEL),
+                model=genie["ai_model"],
             )
 
     raise RuntimeError(_ERROR_MESSAGE)

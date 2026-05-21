@@ -38,7 +38,7 @@ genie compress all images in this folder to under 500kb
 ```sh
 API_KEY=...
 API_BASE_URL=...
-AI_MODEL=...   # optional, defaults to gemini-2.0-flash
+AI_MODEL=...
 ```
 
 **Option 2 — config file** at `~/.genie/config.toml`:
@@ -47,7 +47,7 @@ AI_MODEL=...   # optional, defaults to gemini-2.0-flash
 [genie]
 api_key = "..."
 base_url = "..."
-ai_model = "..."     # optional, defaults to gemini-2.0-flash
+ai_model = "..."
 ```
 
 Use `--linux` to generate Linux commands instead of macOS ones.
