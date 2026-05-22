@@ -14,7 +14,7 @@ uv tool install git+https://github.com/doragiannul-del/genie.git
 
 # 3. Check .env for existing config
 ENV_FILE=".env"
-if [ -f "$ENV_FILE" ] && grep -q "API_KEY" "$ENV_FILE" && grep -q "API_BASE_URL" "$ENV_FILE" && grep -q "AI_MODEL" "$ENV_FILE"; then
+if [ -f "$ENV_FILE" ] && grep -q "GENIE_API_KEY" "$ENV_FILE" && grep -q "GENIE_BASE_URL" "$ENV_FILE" && grep -q "GENIE_MODEL" "$ENV_FILE"; then
     echo "Found existing config in .env — skipping setup."
     echo "genie is ready!"
     exit 0
@@ -24,18 +24,18 @@ fi
 echo ""
 echo "Let's set up your config."
 printf "API key: "
-read -r api_key
+read -r api_key </dev/tty
 printf "Base URL (e.g. https://openrouter.ai/api/v1): "
-read -r base_url
+read -r base_url </dev/tty
 printf "Model (e.g. deepseek/deepseek-v4-flash:free): "
-read -r model
+read -r model </dev/tty
 
 mkdir -p "$HOME/.genie"
 cat > "$HOME/.genie/config.toml" <<EOF
 [genie]
 api_key = "$api_key"
 base_url = "$base_url"
-ai_model = "$model"
+model = "$model"
 EOF
 
 echo ""
