@@ -31,6 +31,14 @@ def main() -> None:
         -type f     → files only
         """,
     )
+    parser.add_argument(
+        "prompt", nargs="+", help="What you want to do, in plain English."
+    )
+    parser.add_argument(
+        "--linux",
+        action="store_true",
+        help="Generate a Linux command instead of macOS (default).",
+    )
     args = parser.parse_args()
 
     try:
