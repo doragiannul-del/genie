@@ -12,14 +12,24 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         prog="genie",
         description="Turn plain English into shell commands.",
-    )
-    parser.add_argument(
-        "prompt", nargs="+", help="What you want to do, in plain English."
-    )
-    parser.add_argument(
-        "--linux",
-        action="store_true",
-        help="Generate a Linux command instead of macOS (default).",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+    examples:
+    $ genie compress output.txt and move it to root
+    → gzip output.txt && mv output.txt.gz /
+
+    breakdown:
+        gzip output.txt       → compress the file
+        mv output.txt.gz /    → move archive to root
+
+    $ genie --linux find all files modified in the last 7 days
+    → find . -mtime -7 -type f
+
+    breakdown:
+        find .      → search from current directory
+        -mtime -7   → modified in the last 7 days
+        -type f     → files only
+        """,
     )
     args = parser.parse_args()
 
